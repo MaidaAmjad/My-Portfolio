@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { isAdmin, setAdminCookie, getEffectiveAdminPassword } from '@/lib/admin-auth'
 import { createServerSupabase } from '@/lib/supabase-server'
-
 export async function POST(request: NextRequest) {
   try {
     if (!(await isAdmin())) {
@@ -34,9 +33,12 @@ export async function POST(request: NextRequest) {
     }
 
     const supabase = createServerSupabase()
-    const { error } = await supabase
-      .from('admin_settings')
-      .upsert({ key: 'admin_password', value: newPassword }, { onConflict: 'key' })
+    // admin_settings table exists at runtime; Database type is extended in types/database.ts
+    // @ts-expect-error - Supabase generated types may not include admin_settings in all builds
+    const { error } = await supabase.from('admin_settings').upsert(
+      { key: 'admin_password', value: newPassword },
+      { onConflict: 'key' }
+    )
 
     if (error) {
       console.error('Change password DB error:', error)

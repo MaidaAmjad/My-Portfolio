@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { ProjectWithTags } from '@/types/database'
-import DataTable from '../components/DataTable'
+import DataTable, { type Column } from '../components/DataTable'
 import FormField from '../components/FormField'
 
 export default function ProjectsManagement() {
@@ -39,7 +39,7 @@ export default function ProjectsManagement() {
     }
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
 
@@ -103,7 +103,7 @@ export default function ProjectsManagement() {
     }
   }
 
-  const columns = [
+  const columns: Column<ProjectWithTags>[] = [
     {
       key: 'title',
       label: 'Title'
@@ -167,7 +167,7 @@ export default function ProjectsManagement() {
               label="Title"
               name="title"
               value={editingProject?.title || ''}
-              onChange={(e) => setEditingProject({...editingProject, title: e.target.value})}
+              onChange={(e) => editingProject && setEditingProject({ ...editingProject, title: e.target.value })}
               required
             />
 
@@ -177,7 +177,7 @@ export default function ProjectsManagement() {
               type="textarea"
               rows={4}
               value={editingProject?.description || ''}
-              onChange={(e) => setEditingProject({...editingProject, description: e.target.value})}
+              onChange={(e) => editingProject && setEditingProject({ ...editingProject, description: e.target.value })}
               required
             />
 
@@ -187,7 +187,7 @@ export default function ProjectsManagement() {
                 name="image_url"
                 type="url"
                 value={editingProject?.image_url || ''}
-                onChange={(e) => setEditingProject({...editingProject, image_url: e.target.value})}
+                onChange={(e) => editingProject && setEditingProject({ ...editingProject, image_url: e.target.value })}
               />
 
               <FormField
@@ -195,7 +195,7 @@ export default function ProjectsManagement() {
                 name="project_url"
                 type="url"
                 value={editingProject?.project_url || ''}
-                onChange={(e) => setEditingProject({...editingProject, project_url: e.target.value})}
+                onChange={(e) => editingProject && setEditingProject({ ...editingProject, project_url: e.target.value })}
               />
             </div>
 
@@ -205,7 +205,7 @@ export default function ProjectsManagement() {
                 name="github_url"
                 type="url"
                 value={editingProject?.github_url || ''}
-                onChange={(e) => setEditingProject({...editingProject, github_url: e.target.value})}
+                onChange={(e) => editingProject && setEditingProject({ ...editingProject, github_url: e.target.value })}
               />
 
               <div className="space-y-2">
@@ -215,7 +215,7 @@ export default function ProjectsManagement() {
                 <select
                   name="featured"
                   value={editingProject?.featured ? 'on' : 'off'}
-                  onChange={(e) => setEditingProject({...editingProject, featured: e.target.value === 'on'})}
+                  onChange={(e) => editingProject && setEditingProject({ ...editingProject, featured: e.target.value === 'on' })}
                   className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-slate-700 dark:text-white"
                 >
                   <option value="on">Yes</option>
@@ -228,8 +228,8 @@ export default function ProjectsManagement() {
               label="Display Order"
               name="display_order"
               type="number"
-              value={editingProject?.display_order || 0}
-              onChange={(e) => setEditingProject({...editingProject, display_order: parseInt(e.target.value)})}
+              value={editingProject?.display_order ?? 0}
+              onChange={(e) => editingProject && setEditingProject({ ...editingProject, display_order: parseInt(e.target.value) || 0 })}
               placeholder="0"
             />
 

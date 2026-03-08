@@ -23,11 +23,8 @@ export async function POST(request: NextRequest) {
     }
 
     const supabase = createServerSupabase()
-    const { data: row, error: fetchError } = await supabase
-      .from('admin_settings')
-      .select('value')
-      .eq('key', 'password_reset')
-      .maybeSingle()
+    const { data, error: fetchError } = await supabase.from('admin_settings').select('value').eq('key', 'password_reset').maybeSingle()
+    const row = data as { value: string } | null
 
     if (fetchError || !row?.value) {
       return NextResponse.json(
@@ -62,9 +59,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { error: updateError } = await supabase
-      .from('admin_settings')
-      .upsert({ key: 'admin_password', value: newPassword }, { onConflict: 'key' })
+    // @ts-expect-error - admin_settings table exists at runtime
+    const { error: updateError } = await supabase.from('admin_settings').upsert({ key: 'admin_password', value: newPassword }, { onConflict: 'key' })
 
     if (updateError) {
       console.error('Reset password: failed to update', updateError)

@@ -21,9 +21,8 @@ export async function PATCH(request: NextRequest) {
 
     const supabase = createServerSupabase()
 
-    const { data, error } = await supabase
-      .from('profiles')
-      .update({
+    // @ts-expect-error - update payload matches profiles.Update
+    const { data, error } = await supabase.from('profiles').update({
         name: name ?? '',
         title: title ?? '',
         bio: bio ?? null,

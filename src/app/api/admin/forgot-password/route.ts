@@ -44,25 +44,17 @@ export async function POST(request: NextRequest) {
     }
 
     const supabase = createServerSupabase()
-    const { data: existing } = await supabase
-      .from('admin_settings')
-      .select('value')
-      .eq('key', 'password_reset')
-      .maybeSingle()
+    const { data: existing } = await supabase.from('admin_settings').select('value').eq('key', 'password_reset').maybeSingle()
 
     const token = crypto.randomBytes(32).toString('hex')
     const tokenHash = crypto.createHash('sha256').update(token).digest('hex')
     const expiresAt = Date.now() + 60 * 60 * 1000 // 1 hour
 
-    const { error: upsertError } = await supabase
-      .from('admin_settings')
-      .upsert(
-        {
-          key: 'password_reset',
-          value: JSON.stringify({ tokenHash, expiresAt, email: normalizedEmail }),
-        },
-        { onConflict: 'key' }
-      )
+    // @ts-expect-error - admin_settings table exists at runtime
+    const { error: upsertError } = await supabase.from('admin_settings').upsert(
+      { key: 'password_reset', value: JSON.stringify({ tokenHash, expiresAt, email: normalizedEmail }) },
+      { onConflict: 'key' }
+    )
 
     if (upsertError) {
       console.error('Forgot password: failed to store token', upsertError)

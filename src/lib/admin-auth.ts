@@ -8,7 +8,8 @@ export async function getEffectiveAdminPassword(): Promise<string> {
     const { createServerSupabase } = await import('@/lib/supabase-server')
     const supabase = createServerSupabase()
     const { data } = await supabase.from('admin_settings').select('value').eq('key', 'admin_password').maybeSingle()
-    if (data?.value) return data.value
+    const row = data as { value: string } | null
+    if (row?.value) return row.value
   } catch {
     // Table missing or env missing; use env fallback
   }

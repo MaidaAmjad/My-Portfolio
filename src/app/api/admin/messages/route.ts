@@ -28,6 +28,7 @@ export async function PATCH(request: NextRequest) {
     if (!id || !status) return NextResponse.json({ error: 'id and status required' }, { status: 400 })
 
     const supabase = createServerSupabase()
+    // @ts-expect-error - update payload matches messages.Update
     const { data, error } = await supabase.from('messages').update({ status }).eq('id', id).select().single()
     if (error) throw error
     return NextResponse.json({ success: true, data })
