@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Developer Portfolio - Mobile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5048e5",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#121121",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased selection:bg-primary/30">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden pb-20">
+<!-- Header -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 glass">
+<div class="flex items-center gap-2">
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined">terminal</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight">Alex.dev</h2>
+</div>
+<button class="flex h-10 w-10 items-center justify-center rounded-full hover:bg-white/10">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</header>
+<!-- Hero Section -->
+<main class="flex flex-col px-6 pt-8 gap-8">
+<section class="flex flex-col items-center text-center">
+<div class="relative mb-6">
+<div class="absolute -inset-1 rounded-full bg-gradient-to-tr from-primary to-purple-500 blur-sm opacity-50"></div>
+<div class="relative h-32 w-32 rounded-full border-4 border-background-dark bg-cover bg-center shadow-2xl" data-alt="Professional portrait of a male software developer" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCJ-wBiGvzW6ZyLx_0iA7tbYdNFv5FNM_OeKnmovwQibkF_X6RzIqy1jfQitUZZmhOes365XcgaVTEWv5pvWdSEkpUxNG5ieuMvU_XoZFzMD9D_VZi8wD6fV8dy7UQqofyyizwZfp6tkEwf01ROtNykgm1rB9xnxQOizAxsnijmjUS3DI2wQdfcsp1TB-58PrGgcXEZUjtqSUfnl3psN0wOp0F5UHanAZo0IFmH9nDps-DXsMzRd6TOBZoZzg0UVsu1brr5W1vO5g");'>
+</div>
+</div>
+<h1 class="text-4xl font-extrabold tracking-tight mb-2">
+                    Building the <span class="text-primary">Future</span> of Web.
+                </h1>
+<p class="text-slate-500 dark:text-slate-400 text-lg mb-6 leading-relaxed">
+                    Full-stack Developer &amp; UI Designer specializing in high-performance digital experiences.
+                </p>
+<div class="flex w-full flex-col gap-3">
+<button class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 text-white font-bold transition-all active:scale-95 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-xl">mail</span>
+                        Hire Me
+                    </button>
+<button class="flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-4 font-bold transition-all active:scale-95">
+<span class="material-symbols-outlined text-xl">description</span>
+                        View Resume
+                    </button>
+</div>
+</section>
+<!-- Skills Grid -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold">Tech Stack</h3>
+<span class="text-xs font-semibold text-primary uppercase tracking-wider">Expertise</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="glass flex flex-col items-center justify-center rounded-xl p-4 gap-2 border border-white/5">
+<span class="material-symbols-outlined text-primary text-3xl">developer_board</span>
+<span class="text-sm font-semibold">React</span>
+</div>
+<div class="glass flex flex-col items-center justify-center rounded-xl p-4 gap-2 border border-white/5">
+<span class="material-symbols-outlined text-primary text-3xl">database</span>
+<span class="text-sm font-semibold">PostgreSQL</span>
+</div>
+<div class="glass flex flex-col items-center justify-center rounded-xl p-4 gap-2 border border-white/5">
+<span class="material-symbols-outlined text-primary text-3xl">javascript</span>
+<span class="text-sm font-semibold">TypeScript</span>
+</div>
+<div class="glass flex flex-col items-center justify-center rounded-xl p-4 gap-2 border border-white/5">
+<span class="material-symbols-outlined text-primary text-3xl">cloud</span>
+<span class="text-sm font-semibold">AWS</span>
+</div>
+</div>
+</section>
+<!-- Project Cards (Single Column) -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-lg font-bold">Featured Projects</h3>
+<a class="text-sm text-primary font-semibold" href="#">View All</a>
+</div>
+<!-- Project 1 -->
+<div class="group glass overflow-hidden rounded-2xl border border-white/10 flex flex-col">
+<div class="h-48 w-full bg-cover bg-center" data-alt="Modern analytics dashboard interface design" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC4dCPH9KIV_gFKQxDWBIbV9xFaiBLcADiOyLC9N59Puj1aKKOvoLFaQbDCli88Oy6LVk9EN8VommP-tdzmUHQuvIH5AS_I2m6_WckSd875545b2WnSJXuWLJGl4Tvl6U7o94Nr9kXgU4Q8wE-Se_987XOpcbtB4WaZc7_zg3yVn_nNBOoC9EDCcdIexsB9V0Yr6NJQsJpIB4Efdxr_CrtxChEALoZP4b5c5hv3fogjAoVjAofTWGogfc-AbQbkW0_p1bI-I6AUhg");'>
+</div>
+<div class="p-5 flex flex-col gap-2">
+<div class="flex gap-2">
+<span class="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary uppercase tracking-wide">Next.js</span>
+<span class="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary uppercase tracking-wide">Tailwind</span>
+</div>
+<h4 class="text-xl font-bold">Nexus Analytics Platform</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400">Enterprise-grade dashboard for real-time data processing and visualization.</p>
+<button class="mt-2 flex items-center justify-center gap-2 rounded-lg bg-white/5 py-2 text-sm font-semibold">
+                            Case Study <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Project 2 -->
+<div class="group glass overflow-hidden rounded-2xl border border-white/10 flex flex-col">
+<div class="h-48 w-full bg-cover bg-center" data-alt="Minimalist e-commerce mobile app interface" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBSLFy5WtR8Joc4E4nNrnOaX9ujyu1FIEzpDKvrlvfEhfT9t4G5NWXKIpoZroh6m-gArknZKaxGWK0ZkJ42etgXr72tVmkm7oyOzBoui6wbRj9B4yHXdYF9oWyQixamZpAZfcJmv3Si2SnvmwBtLDxQxV63Ufne_Me9Ve5qoENRpXFtkSwf0jamPJbb0YsKUg_0CGV_z-DI-kNncadXXHvRfIn1oCtwX26iLu-96VUGAGW1xfUm886EwqGHOtjRBqAMQg2P23Gt1w");'>
+</div>
+<div class="p-5 flex flex-col gap-2">
+<div class="flex gap-2">
+<span class="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary uppercase tracking-wide">Flutter</span>
+<span class="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary uppercase tracking-wide">Firebase</span>
+</div>
+<h4 class="text-xl font-bold">Lumina E-Commerce</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400">Minimalist mobile commerce solution with seamless payment integration.</p>
+<button class="mt-2 flex items-center justify-center gap-2 rounded-lg bg-white/5 py-2 text-sm font-semibold">
+                            Case Study <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 z-[60] glass border-t border-white/5 px-6 py-3 flex items-center justify-between">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-bold">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">code</span>
+<span class="text-[10px] font-bold">Projects</span>
+</a>
+<div class="relative -top-6">
+<button class="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-xl shadow-primary/40 ring-4 ring-background-dark">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold">Profile</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">alternate_email</span>
+<span class="text-[10px] font-bold">Contact</span>
+</a>
+</nav>
+<!-- Decorative Blurs -->
+<div class="fixed top-0 right-0 -z-10 h-64 w-64 bg-primary/20 blur-[100px] pointer-events-none"></div>
+<div class="fixed bottom-0 left-0 -z-10 h-64 w-64 bg-purple-600/10 blur-[100px] pointer-events-none"></div>
+</div>
+</body></html>
