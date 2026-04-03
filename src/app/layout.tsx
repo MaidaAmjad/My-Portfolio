@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Maida Amjad Portfolio',
   description: 'Building the future of intelligent applications. Specialized in LLMs, computer vision, and scalable cloud architectures.',
+  verification: {
+    google: "2BhWXxGgloO057DUqBnUARPsWVF9AyyLjHAc396zISY",
+  },
 }
 
 export default function RootLayout({
