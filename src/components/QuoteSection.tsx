@@ -53,20 +53,7 @@ const QuoteSection = () => {
           </>
         )}
 
-        <div className="mt-10">
-          <a
-            href="/api/resume"
-            className="inline-flex items-center gap-2 px-8 py-3 rounded-full font-bold text-white transition-all duration-300"
-            style={{background: 'linear-gradient(135deg, #5048e5, #7c75eb)', boxShadow: '0 0 18px #5048e5, 0 0 40px #5048e588'}}
-            onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 0 30px #5048e5, 0 0 60px #5048e5bb')}
-            onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 0 18px #5048e5, 0 0 40px #5048e588')}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 16l-5-5 1.41-1.41L11 13.17V4h2v9.17l2.59-2.58L17 11l-5 5zm-7 4v-2h14v2H5z"/>
-            </svg>
-            Download Resume
-          </a>
-        </div>
+
       </div>
     </section>
   )
