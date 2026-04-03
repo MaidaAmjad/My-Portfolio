@@ -29,7 +29,7 @@ const Navbar = () => {
   }, [])
 
   return (
-    <header className="fixed top-0 z-50 w-full px-6 py-4">
+    <header className="fixed top-0 z-50 w-full px-6 py-4 bg-black">
       <nav className="mx-auto max-w-5xl glass dark:glass flex items-center justify-between rounded-full px-6 py-3 shadow-lg">
         <div className="flex items-center gap-2 text-primary">
           <span className="text-slate-900 dark:text-white text-lg font-bold tracking-tight">
