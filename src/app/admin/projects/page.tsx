@@ -12,6 +12,7 @@ export default function ProjectsManagement() {
   const [editingProject, setEditingProject] = useState<ProjectWithTags | null>(null)
   const [showForm, setShowForm] = useState(false)
   const [message, setMessage] = useState('')
+  const [tagsInput, setTagsInput] = useState('')
 
   useEffect(() => {
     fetchProjects()
@@ -50,7 +51,8 @@ export default function ProjectsManagement() {
       project_url: (formData.get('project_url') as string) || '',
       github_url: (formData.get('github_url') as string) || '',
       featured: formData.get('featured') === 'on',
-      display_order: parseInt(formData.get('display_order') as string) || 0
+      display_order: parseInt(formData.get('display_order') as string) || 0,
+      tags: tagsInput.split(',').map(t => t.trim()).filter(Boolean)
     }
 
     try {
@@ -76,6 +78,7 @@ export default function ProjectsManagement() {
       }
       setShowForm(false)
       setEditingProject(null)
+      setTagsInput('')
       fetchProjects()
     } catch (error) {
       console.error('Error saving project:', error)
@@ -85,6 +88,7 @@ export default function ProjectsManagement() {
 
   const handleEdit = (project: ProjectWithTags) => {
     setEditingProject(project)
+    setTagsInput(project.project_tags.map(t => t.tag).join(', '))
     setShowForm(true)
   }
 
@@ -145,6 +149,7 @@ export default function ProjectsManagement() {
               onClick={() => {
                 setShowForm(false)
                 setEditingProject(null)
+                setTagsInput('')
               }}
               className="text-slate-500 hover:text-slate-700 transition-colors"
             >
@@ -181,14 +186,39 @@ export default function ProjectsManagement() {
               required
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField
-                label="Image URL"
-                name="image_url"
-                type="url"
-                value={editingProject?.image_url || ''}
-                onChange={(e) => editingProject && setEditingProject({ ...editingProject, image_url: e.target.value })}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                Technologies / Languages <span className="text-slate-400 font-normal">(comma separated, e.g. Python, LangChain)</span>
+              </label>
+              <input
+                type="text"
+                value={tagsInput}
+                onChange={(e) => setTagsInput(e.target.value)}
+                placeholder="Python, LangChain, React"
+                className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-slate-700 dark:text-white"
               />
+              {tagsInput && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {tagsInput.split(',').map(t => t.trim()).filter(Boolean).map((tag, i) => (
+                    <span key={i} className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full">{tag}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <FormField
+                  label="Image URL"
+                  name="image_url"
+                  type="url"
+                  value={editingProject?.image_url || ''}
+                  onChange={(e) => editingProject && setEditingProject({ ...editingProject, image_url: e.target.value })}
+                />
+                {editingProject?.image_url && (
+                  <img src={editingProject.image_url} alt="preview" className="w-full h-32 object-cover rounded-lg border border-slate-200 dark:border-slate-600" />
+                )}
+              </div>
 
               <FormField
                 label="Project URL"

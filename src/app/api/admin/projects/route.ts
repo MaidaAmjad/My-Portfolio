@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
   try {
     if (!(await isAdmin())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const body = await request.json()
-    const { title, description, image_url, project_url, github_url, featured, display_order } = body
+    const { title, description, image_url, project_url, github_url, featured, display_order, tags } = body
     if (!title || !description) return NextResponse.json({ error: 'title and description required' }, { status: 400 })
 
     const supabase = createServerSupabase()
@@ -22,6 +22,13 @@ export async function POST(request: NextRequest) {
     }).select().single()
 
     if (error) throw error
+
+    if (tags && Array.isArray(tags) && tags.length > 0) {
+      await supabase.from('project_tags').insert(
+        tags.map((tag: string) => ({ project_id: data.id, tag }))
+      )
+    }
+
     return NextResponse.json({ success: true, data })
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Failed'
@@ -33,7 +40,7 @@ export async function PATCH(request: NextRequest) {
   try {
     if (!(await isAdmin())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const body = await request.json()
-    const { id, title, description, image_url, project_url, github_url, featured, display_order } = body
+    const { id, title, description, image_url, project_url, github_url, featured, display_order, tags } = body
     if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 })
 
     const supabase = createServerSupabase()
@@ -50,6 +57,16 @@ export async function PATCH(request: NextRequest) {
     }).eq('id', id).select().single()
 
     if (error) throw error
+
+    if (tags !== undefined && Array.isArray(tags)) {
+      await supabase.from('project_tags').delete().eq('project_id', id)
+      if (tags.length > 0) {
+        await supabase.from('project_tags').insert(
+          tags.map((tag: string) => ({ project_id: id, tag }))
+        )
+      }
+    }
+
     return NextResponse.json({ success: true, data })
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Failed'
