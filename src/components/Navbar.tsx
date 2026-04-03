@@ -32,7 +32,6 @@ const Navbar = () => {
     <header className="fixed top-0 z-50 w-full px-6 py-4">
       <nav className="mx-auto max-w-5xl glass dark:glass flex items-center justify-between rounded-full px-6 py-3 shadow-lg">
         <div className="flex items-center gap-2 text-primary">
-          <span className="material-symbols-outlined text-3xl font-bold">terminal</span>
           <span className="text-slate-900 dark:text-white text-lg font-bold tracking-tight">
             {profile?.name || 'Portfolio'}
           </span>
