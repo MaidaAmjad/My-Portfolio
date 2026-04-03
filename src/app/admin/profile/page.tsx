@@ -10,6 +10,41 @@ export default function ProfileManagement() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
+  const [resumeUrl, setResumeUrl] = useState('')
+  const [resumeSaving, setResumeSaving] = useState(false)
+  const [resumeMessage, setResumeMessage] = useState('')
+
+  useEffect(() => {
+    fetchProfile()
+    fetchResumeUrl()
+  }, [])
+
+  const fetchResumeUrl = async () => {
+    const { data } = await supabase
+      .from('admin_settings')
+      .select('value')
+      .eq('key', 'resume_url')
+      .maybeSingle()
+    if (data?.value) setResumeUrl(data.value)
+  }
+
+  const handleResumeSave = async () => {
+    setResumeSaving(true)
+    setResumeMessage('')
+    try {
+      const res = await fetch('/api/admin/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: 'resume_url', value: resumeUrl }),
+      })
+      if (!res.ok) throw new Error('Failed to save')
+      setResumeMessage('Resume URL saved!')
+    } catch {
+      setResumeMessage('Failed to save resume URL')
+    } finally {
+      setResumeSaving(false)
+    }
+  }
 
   useEffect(() => {
     fetchProfile()
@@ -184,6 +219,41 @@ export default function ProfileManagement() {
             </button>
           </div>
         </form>
+      </div>
+
+      {/* Resume Settings */}
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6">
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Resume</h2>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+          Paste a direct download link to your resume (Google Drive, Dropbox, etc.). The "Download Resume" button on the portfolio will use this URL.
+        </p>
+
+        {resumeMessage && (
+          <div className={`mb-4 p-3 rounded-lg text-sm ${
+            resumeMessage.includes('saved')
+              ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800'
+              : 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800'
+          }`}>
+            {resumeMessage}
+          </div>
+        )}
+
+        <div className="flex gap-3">
+          <input
+            type="url"
+            value={resumeUrl}
+            onChange={(e) => setResumeUrl(e.target.value)}
+            placeholder="https://drive.google.com/uc?export=download&id=..."
+            className="flex-1 px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-slate-700 dark:text-white text-sm"
+          />
+          <button
+            onClick={handleResumeSave}
+            disabled={resumeSaving}
+            className="px-5 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 text-sm font-medium whitespace-nowrap"
+          >
+            {resumeSaving ? 'Saving...' : 'Save URL'}
+          </button>
+        </div>
       </div>
     </div>
   )
