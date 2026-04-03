@@ -49,10 +49,10 @@ const QuoteSection = () => {
     return (
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-primary italic" style={{textShadow: '0 0 18px #5048e5, 0 0 40px #5048e588'}}>
+          <p className="italic" style={{color: '#5048e5', textShadow: '0 0 18px #5048e5, 0 0 40px #5048e588'}}>
             "The only way to do great work is to love what you do."
           </p>
-          <p className="text-primary/70 mt-4" style={{textShadow: '0 0 10px #5048e5aa'}}>- Steve Jobs</p>
+          <p className="mt-4" style={{color: '#7c75eb', textShadow: '0 0 10px #5048e5aa'}}>- Steve Jobs</p>
         </div>
       </section>
     )
@@ -61,10 +61,10 @@ const QuoteSection = () => {
   return (
     <section className="py-20 px-4">
       <div className="max-w-4xl mx-auto text-center">
-        <p className="text-primary italic text-lg md:text-xl leading-relaxed" style={{textShadow: '0 0 18px #5048e5, 0 0 40px #5048e588'}}>
+        <p className="italic text-lg md:text-xl leading-relaxed" style={{color: '#5048e5', textShadow: '0 0 18px #5048e5, 0 0 40px #5048e588'}}>
           "{quote.content}"
         </p>
-        <p className="text-primary/70 mt-6 text-base md:text-lg" style={{textShadow: '0 0 10px #5048e5aa'}}>
+        <p className="mt-6 text-base md:text-lg" style={{color: '#7c75eb', textShadow: '0 0 10px #5048e5aa'}}>
           — {quote.author}
         </p>
         
