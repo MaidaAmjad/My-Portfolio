@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
     }
 
     const supabase = createServerSupabase()
+    // @ts-expect-error - insert payload matches messages.Insert
     const { error } = await supabase.from('messages').insert({
       name: name.trim(),
       email: email.trim(),

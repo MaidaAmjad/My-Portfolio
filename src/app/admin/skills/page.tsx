@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { Skill } from '@/types/database'
-import DataTable from '../components/DataTable'
+import DataTable, { type Column } from '../components/DataTable'
 import FormField from '../components/FormField'
 
 export default function SkillsManagement() {
@@ -34,7 +34,7 @@ export default function SkillsManagement() {
     }
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
 
@@ -96,7 +96,7 @@ export default function SkillsManagement() {
     }
   }
 
-  const columns = [
+  const columns: Column<Skill>[] = [
     { key: 'name', label: 'Name' },
     { key: 'category', label: 'Category' },
     { 
@@ -152,7 +152,7 @@ export default function SkillsManagement() {
                 label="Name"
                 name="name"
                 value={editingSkill?.name || ''}
-                onChange={(e) => setEditingSkill({...editingSkill, name: e.target.value})}
+                onChange={(e) => editingSkill && setEditingSkill({ ...editingSkill, name: e.target.value })}
                 required
               />
 
@@ -160,7 +160,7 @@ export default function SkillsManagement() {
                 label="Category"
                 name="category"
                 value={editingSkill?.category || ''}
-                onChange={(e) => setEditingSkill({...editingSkill, category: e.target.value})}
+                onChange={(e) => editingSkill && setEditingSkill({ ...editingSkill, category: e.target.value })}
               />
             </div>
 
@@ -169,7 +169,7 @@ export default function SkillsManagement() {
                 label="Icon"
                 name="icon"
                 value={editingSkill?.icon || ''}
-                onChange={(e) => setEditingSkill({...editingSkill, icon: e.target.value})}
+                onChange={(e) => editingSkill && setEditingSkill({ ...editingSkill, icon: e.target.value })}
                 placeholder="🐍"
               />
 
@@ -178,7 +178,7 @@ export default function SkillsManagement() {
                 name="proficiency_level"
                 type="number"
                 value={editingSkill?.proficiency_level || 0}
-                onChange={(e) => setEditingSkill({...editingSkill, proficiency_level: parseInt(e.target.value)})}
+                onChange={(e) => editingSkill && setEditingSkill({ ...editingSkill, proficiency_level: parseInt(e.target.value) })}
                 min="0"
                 max="100"
                 required
@@ -190,7 +190,7 @@ export default function SkillsManagement() {
               name="display_order"
               type="number"
               value={editingSkill?.display_order || 0}
-              onChange={(e) => setEditingSkill({...editingSkill, display_order: parseInt(e.target.value)})}
+              onChange={(e) => editingSkill && setEditingSkill({ ...editingSkill, display_order: parseInt(e.target.value) })}
               placeholder="0"
             />
 

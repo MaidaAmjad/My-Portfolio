@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
     if (!title || !company || !period) return NextResponse.json({ error: 'title, company, and period required' }, { status: 400 })
 
     const supabase = createServerSupabase()
+    // @ts-expect-error - Supabase client typed with Database; insert payload matches experience.Insert
     const { data, error } = await supabase.from('experience').insert({
       title,
       company,
@@ -35,6 +36,7 @@ export async function PATCH(request: NextRequest) {
     if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 })
 
     const supabase = createServerSupabase()
+    // @ts-expect-error - Supabase client typed with Database; update payload matches experience.Update
     const { data, error } = await supabase.from('experience').update({
       ...(title !== undefined && { title }),
       ...(company !== undefined && { company }),

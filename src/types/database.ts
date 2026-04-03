@@ -251,6 +251,11 @@ export type Database = {
           created_at?: string
         }
       }
+      admin_settings: {
+        Row: { key: string; value: string | null }
+        Insert: { key: string; value?: string | null }
+        Update: { key?: string; value?: string | null }
+      }
     }
     Views: {
       [_ in never]: never

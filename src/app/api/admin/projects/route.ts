@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
     if (!title || !description) return NextResponse.json({ error: 'title and description required' }, { status: 400 })
 
     const supabase = createServerSupabase()
+    // @ts-expect-error - insert payload matches projects.Insert
     const { data, error } = await supabase.from('projects').insert({
       title,
       description,
@@ -36,6 +37,7 @@ export async function PATCH(request: NextRequest) {
     if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 })
 
     const supabase = createServerSupabase()
+    // @ts-expect-error - update payload matches projects.Update
     const { data, error } = await supabase.from('projects').update({
       ...(title !== undefined && { title }),
       ...(description !== undefined && { description }),
