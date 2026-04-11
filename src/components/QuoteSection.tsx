@@ -1,56 +1,34 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-
-interface Quote {
-  content: string
-  author: string
-}
-
-const FALLBACK_QUOTES: Quote[] = [
-  { content: 'The only way to do great work is to love what you do.', author: 'Steve Jobs' },
-  { content: 'In the middle of every difficulty lies opportunity.', author: 'Albert Einstein' },
-  { content: 'It does not matter how slowly you go as long as you do not stop.', author: 'Confucius' },
-  { content: 'Success is not final, failure is not fatal: it is the courage to continue that counts.', author: 'Winston Churchill' },
-  { content: 'The future belongs to those who believe in the beauty of their dreams.', author: 'Eleanor Roosevelt' },
-  { content: 'Code is like humor. When you have to explain it, it\'s bad.', author: 'Cory House' },
-  { content: 'First, solve the problem. Then, write the code.', author: 'John Johnson' },
-  { content: 'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.', author: 'Martin Fowler' },
-]
+import { ensureActiveQuote } from '@/services/quotes'
 
 const QuoteSection = () => {
-  const [quote, setQuote] = useState<Quote | null>(null)
+  const [content, setContent] = useState('')
+  const [author, setAuthor] = useState('')
 
   useEffect(() => {
-    const loadQuote = async () => {
-      try {
-        const res = await fetch('https://api.quotable.io/random?tags=technology,success,inspirational', { cache: 'no-store' })
-        if (res.ok) {
-          const data = await res.json()
-          setQuote({ content: data.content, author: data.author })
-          return
-        }
-      } catch {
-        // fall through to fallback
+    ensureActiveQuote().then((q) => {
+      if (q) {
+        setContent(q.content)
+        setAuthor(q.author)
+      } else {
+        setContent('The only way to do great work is to love what you do.')
+        setAuthor('Steve Jobs')
       }
-      // Fallback: pick a random quote from local list
-      const random = FALLBACK_QUOTES[Math.floor(Math.random() * FALLBACK_QUOTES.length)]
-      setQuote(random)
-    }
-
-    loadQuote()
+    })
   }, [])
 
   return (
     <section className="py-20 px-4">
       <div className="max-w-4xl mx-auto text-center">
-        {quote ? (
+        {content ? (
           <>
             <p className="italic text-lg md:text-xl leading-relaxed" style={{color: '#5048e5', textShadow: '0 0 18px #5048e5, 0 0 40px #5048e588'}}>
-              &ldquo;{quote.content}&rdquo;
+              &ldquo;{content}&rdquo;
             </p>
             <p className="mt-6 text-base md:text-lg" style={{color: '#7c75eb', textShadow: '0 0 10px #5048e5aa'}}>
-              — {quote.author}
+              — {author}
             </p>
           </>
         ) : (
