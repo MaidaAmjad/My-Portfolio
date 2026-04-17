@@ -3,10 +3,11 @@ import { isAdmin } from '@/lib/admin-auth'
 import { createServerSupabase } from '@/lib/supabase-server'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function upsertTags(supabase: any, projectId: string, tags: string[]) {
-  await supabase.from('project_tags').delete().eq('project_id', projectId)
+async function upsertTags(supabase: ReturnType<typeof createServerSupabase>, projectId: string, tags: string[]) {
+  const client = supabase as unknown as { from: (table: string) => any }
+  await client.from('project_tags').delete().eq('project_id', projectId)
   if (tags.length > 0) {
-    await supabase.from('project_tags').insert(
+    await client.from('project_tags').insert(
       tags.map((tag: string) => ({ project_id: projectId, tag }))
     )
   }
