@@ -2,31 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { isAdmin } from '@/lib/admin-auth'
 import { createServerSupabase } from '@/lib/supabase-server'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
-
-async function upsertTags(projectId: string, tags: string[]) {
-  // Delete existing tags
-  await fetch(`${supabaseUrl}/rest/v1/project_tags?project_id=eq.${projectId}`, {
-    method: 'DELETE',
-    headers: {
-      apikey: serviceKey,
-      Authorization: `Bearer ${serviceKey}`,
-      'Content-Type': 'application/json',
-    },
-  })
-  // Insert new tags
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function upsertTags(supabase: any, projectId: string, tags: string[]) {
+  await supabase.from('project_tags').delete().eq('project_id', projectId)
   if (tags.length > 0) {
-    await fetch(`${supabaseUrl}/rest/v1/project_tags`, {
-      method: 'POST',
-      headers: {
-        apikey: serviceKey,
-        Authorization: `Bearer ${serviceKey}`,
-        'Content-Type': 'application/json',
-        Prefer: 'return=minimal',
-      },
-      body: JSON.stringify(tags.map(tag => ({ project_id: projectId, tag }))),
-    })
+    await supabase.from('project_tags').insert(
+      tags.map((tag: string) => ({ project_id: projectId, tag }))
+    )
   }
 }
 
@@ -52,7 +34,7 @@ export async function POST(request: NextRequest) {
     if (error) throw error
 
     if (Array.isArray(tags) && tags.length > 0) {
-      await upsertTags(data.id, tags)
+      await upsertTags(supabase, data.id, tags)
     }
 
     return NextResponse.json({ success: true, data })
@@ -85,7 +67,7 @@ export async function PATCH(request: NextRequest) {
     if (error) throw error
 
     if (Array.isArray(tags)) {
-      await upsertTags(id, tags)
+      await upsertTags(supabase, id, tags)
     }
 
     return NextResponse.json({ success: true, data })
