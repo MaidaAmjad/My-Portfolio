@@ -53,11 +53,11 @@ export default function ProjectsManagement() {
       github_url: (formData.get('github_url') as string) || null,
       featured: formData.get('featured') === 'on',
       display_order: parseInt(formData.get('display_order') as string) || 0,
+      tags,
     }
 
     try {
       if (editingProject) {
-        // Update project fields via API
         const res = await fetch('/api/admin/projects', {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
@@ -65,18 +65,8 @@ export default function ProjectsManagement() {
         })
         const data = await res.json().catch(() => ({}))
         if (!res.ok) throw new Error(data.error || 'Update failed')
-
-        // Handle tags directly via supabase client
-        await supabase.from('project_tags').delete().eq('project_id', editingProject.id)
-        if (tags.length > 0) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          await (supabase.from('project_tags') as any).insert(
-            tags.map(tag => ({ project_id: editingProject.id, tag }))
-          )
-        }
         setMessage('Project updated successfully!')
       } else {
-        // Create project via API
         const res = await fetch('/api/admin/projects', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -84,14 +74,6 @@ export default function ProjectsManagement() {
         })
         const data = await res.json().catch(() => ({}))
         if (!res.ok) throw new Error(data.error || 'Create failed')
-
-        // Insert tags directly via supabase client
-        if (tags.length > 0 && data.data?.id) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          await (supabase.from('project_tags') as any).insert(
-            tags.map(tag => ({ project_id: data.data.id, tag }))
-          )
-        }
         setMessage('Project created successfully!')
       }
       setShowForm(false)
