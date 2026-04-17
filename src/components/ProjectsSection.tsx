@@ -21,6 +21,12 @@ const ProjectsSection = () => {
     }
 
     fetchProjects()
+
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') fetchProjects()
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    return () => document.removeEventListener('visibilitychange', onVisible)
   }, [])
 
   if (loading) {

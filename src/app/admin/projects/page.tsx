@@ -43,37 +43,55 @@ export default function ProjectsManagement() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
+    const tags = tagsInput.split(',').map(t => t.trim()).filter(Boolean)
 
     const projectData = {
       title: formData.get('title') as string,
       description: formData.get('description') as string,
-      image_url: (formData.get('image_url') as string) || '',
-      project_url: (formData.get('project_url') as string) || '',
-      github_url: (formData.get('github_url') as string) || '',
+      image_url: (formData.get('image_url') as string) || null,
+      project_url: (formData.get('project_url') as string) || null,
+      github_url: (formData.get('github_url') as string) || null,
       featured: formData.get('featured') === 'on',
       display_order: parseInt(formData.get('display_order') as string) || 0,
-      tags: tagsInput.split(',').map(t => t.trim()).filter(Boolean)
     }
 
     try {
-      const url = '/api/admin/projects'
       if (editingProject) {
-        const res = await fetch(url, {
+        // Update project fields via API
+        const res = await fetch('/api/admin/projects', {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id: editingProject.id, ...projectData })
         })
         const data = await res.json().catch(() => ({}))
         if (!res.ok) throw new Error(data.error || 'Update failed')
+
+        // Handle tags directly via supabase client
+        await supabase.from('project_tags').delete().eq('project_id', editingProject.id)
+        if (tags.length > 0) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          await (supabase.from('project_tags') as any).insert(
+            tags.map(tag => ({ project_id: editingProject.id, tag }))
+          )
+        }
         setMessage('Project updated successfully!')
       } else {
-        const res = await fetch(url, {
+        // Create project via API
+        const res = await fetch('/api/admin/projects', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(projectData)
         })
         const data = await res.json().catch(() => ({}))
         if (!res.ok) throw new Error(data.error || 'Create failed')
+
+        // Insert tags directly via supabase client
+        if (tags.length > 0 && data.data?.id) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          await (supabase.from('project_tags') as any).insert(
+            tags.map(tag => ({ project_id: data.data.id, tag }))
+          )
+        }
         setMessage('Project created successfully!')
       }
       setShowForm(false)
