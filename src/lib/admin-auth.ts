@@ -47,7 +47,8 @@ export async function setAdminCookie(value: string): Promise<void> {
     path: '/',
     httpOnly: true,
     sameSite: 'lax',
-    maxAge: 3600, // 1 hour
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 60 * 60 * 24, // 24 hours
   })
 }
 
