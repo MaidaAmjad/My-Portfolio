@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     const supabase = createServerSupabase()
     // @ts-expect-error - insert payload matches projects.Insert
-    const { data, error } = await supabase.from('projects').insert({
+    const insertResult = await supabase.from('projects').insert({
       title,
       description,
       image_url: image_url || null,
@@ -32,7 +32,8 @@ export async function POST(request: NextRequest) {
       display_order: Number(display_order) ?? 0,
     }).select().single()
 
-    if (error) throw error
+    if (insertResult.error) throw insertResult.error
+    const data = insertResult.data as { id: string }
 
     if (Array.isArray(tags) && tags.length > 0) {
       await upsertTags(supabase, data.id, tags)
