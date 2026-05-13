@@ -53,6 +53,29 @@ export async function getProjects(): Promise<ProjectWithTags[]> {
   }
 }
 
+/** Homepage featured strip: featured only, capped (e.g. 3). */
+export async function getFeaturedProjectsPreview(limit: number): Promise<ProjectWithTags[]> {
+  try {
+    const { data, error } = await supabase
+      .from('projects')
+      .select(`
+        *,
+        project_tags (
+          tag
+        )
+      `)
+      .eq('featured', true)
+      .order('display_order', { ascending: true })
+      .limit(limit)
+
+    if (error) throw error
+    return data || []
+  } catch (error) {
+    console.error('Error fetching featured projects:', error)
+    return []
+  }
+}
+
 export async function getExperience(): Promise<Experience[]> {
   try {
     const { data, error } = await supabase

@@ -1,8 +1,12 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { getProjects } from '@/services/portfolio'
+import Link from 'next/link'
+import { getFeaturedProjectsPreview } from '@/services/portfolio'
 import type { ProjectWithTags } from '@/types/database'
+import ProjectCard from '@/components/ProjectCard'
+
+const FEATURED_HOME_LIMIT = 3
 
 const ProjectsSection = () => {
   const [projects, setProjects] = useState<ProjectWithTags[]>([])
@@ -11,7 +15,7 @@ const ProjectsSection = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const data = await getProjects()
+        const data = await getFeaturedProjectsPreview(FEATURED_HOME_LIMIT)
         setProjects(data)
       } catch (error) {
         console.error('Failed to fetch projects:', error)
@@ -57,36 +61,26 @@ const ProjectsSection = () => {
           <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Featured Projects</h2>
           <p className="text-slate-600 dark:text-slate-400 mt-2">Solving real-world problems with code.</p>
         </div>
-        <button className="text-primary font-bold flex items-center gap-2 group">
+        <Link
+          href="/projects"
+          className="text-primary font-bold flex items-center gap-2 group"
+        >
           View All
           <svg className="w-5 h-5 inline-block group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
-        </button>
+        </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project) => (
-          <div key={project.id} className="group glass dark:glass rounded-3xl overflow-hidden flex flex-col h-full border border-slate-200 dark:border-white/5 shadow-xl transition-all hover:translate-y-[-8px]">
-            <div className="h-48 w-full bg-slate-100 dark:bg-white/5 relative overflow-hidden">
-              <img 
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
-                alt={project.title}
-                src={project.image_url || '/placeholder-project.jpg'}
-              />
-            </div>
-            <div className="p-6 flex flex-col flex-1">
-              <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">{project.description}</p>
-              <div className="flex flex-wrap gap-2 mt-auto">
-                {project.project_tags?.map((tagData, tagIndex) => (
-                  <span key={tagIndex} className="text-[10px] font-bold px-2 py-1 bg-slate-100 dark:bg-white/10 rounded uppercase tracking-wider">
-                    {tagData.tag}
-                  </span>
-                ))}
-              </div>
-            </div>
+        {projects.length === 0 ? (
+          <div className="col-span-full rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/80 dark:bg-white/5 px-6 py-10 text-center">
+            <p className="text-slate-600 dark:text-slate-400">
+              No featured projects right now. Open <span className="font-semibold text-slate-800 dark:text-slate-200">View All</span> for the full list.
+            </p>
           </div>
-        ))}
+        ) : (
+          projects.map((project) => <ProjectCard key={project.id} project={project} />)
+        )}
       </div>
     </section>
   )
