@@ -1,22 +1,50 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { ensureActiveQuote } from '@/services/quotes'
+
+const FALLBACK = {
+  content: 'The only way to do great work is to love what you do.',
+  author: 'Steve Jobs',
+}
 
 const QuoteSection = () => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
 
   useEffect(() => {
-    ensureActiveQuote().then((q) => {
-      if (q) {
-        setContent(q.content)
-        setAuthor(q.author)
-      } else {
-        setContent('The only way to do great work is to love what you do.')
-        setAuthor('Steve Jobs')
+    let cancelled = false
+
+    const load = async () => {
+      try {
+        const res = await fetch('/api/quotes/refresh', { cache: 'no-store' })
+        const data = (await res.json()) as { quote?: { content: string; author: string } | null }
+        const q = data.quote
+        if (cancelled) return
+        if (q?.content) {
+          setContent(q.content)
+          setAuthor(q.author)
+        } else {
+          setContent(FALLBACK.content)
+          setAuthor(FALLBACK.author)
+        }
+      } catch {
+        if (!cancelled) {
+          setContent(FALLBACK.content)
+          setAuthor(FALLBACK.author)
+        }
       }
-    })
+    }
+
+    void load()
+
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') void load()
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    return () => {
+      cancelled = true
+      document.removeEventListener('visibilitychange', onVisible)
+    }
   }, [])
 
   return (

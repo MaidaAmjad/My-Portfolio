@@ -34,6 +34,8 @@ const ContactSection = () => {
         setSubmitStatus('success')
         setFormData({ name: '', email: '', message: '' })
       } else {
+        const err = await res.json().catch(() => ({}))
+        console.error('Contact API:', err)
         setSubmitStatus('error')
       }
     } catch (error) {

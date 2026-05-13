@@ -115,12 +115,12 @@ export async function getRandomQuote(): Promise<Quote | null> {
       .or('expires_at.is.null,expires_at.gt.now()')
       .order('created_at', { ascending: false })
       .limit(1)
-      .single()
+      .maybeSingle()
 
-    if (error && error.code !== 'PGRST116') { // PGRST116 is "no rows returned"
+    if (error && error.code !== 'PGRST116') {
       throw error
     }
-    
+
     return data
   } catch (error) {
     console.error('Error fetching quote:', error)
