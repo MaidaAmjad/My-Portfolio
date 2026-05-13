@@ -152,20 +152,28 @@ export default function ExperienceManagement() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form key={editingExperience?.id ?? 'new'} onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 label="Title"
                 name="title"
-                value={editingExperience?.title ?? ''}
-                onChange={(e) => editingExperience && setEditingExperience({ ...editingExperience, title: e.target.value })}
+                value={editingExperience ? editingExperience.title : undefined}
+                onChange={
+                  editingExperience
+                    ? (e) => setEditingExperience({ ...editingExperience, title: e.target.value })
+                    : undefined
+                }
                 required
               />
               <FormField
                 label="Company"
                 name="company"
-                value={editingExperience?.company ?? ''}
-                onChange={(e) => editingExperience && setEditingExperience({ ...editingExperience, company: e.target.value })}
+                value={editingExperience ? editingExperience.company : undefined}
+                onChange={
+                  editingExperience
+                    ? (e) => setEditingExperience({ ...editingExperience, company: e.target.value })
+                    : undefined
+                }
                 required
               />
             </div>
@@ -173,8 +181,12 @@ export default function ExperienceManagement() {
             <FormField
               label="Period"
               name="period"
-              value={editingExperience?.period ?? ''}
-              onChange={(e) => editingExperience && setEditingExperience({ ...editingExperience, period: e.target.value })}
+              value={editingExperience ? editingExperience.period : undefined}
+              onChange={
+                editingExperience
+                  ? (e) => setEditingExperience({ ...editingExperience, period: e.target.value })
+                  : undefined
+              }
               placeholder="e.g. 2020 – Present"
               required
             />
@@ -184,24 +196,40 @@ export default function ExperienceManagement() {
               name="description"
               type="textarea"
               rows={4}
-              value={editingExperience?.description ?? ''}
-              onChange={(e) => editingExperience && setEditingExperience({ ...editingExperience, description: e.target.value })}
+              value={editingExperience ? (editingExperience.description ?? '') : undefined}
+              onChange={
+                editingExperience
+                  ? (e) => setEditingExperience({ ...editingExperience, description: e.target.value })
+                  : undefined
+              }
             />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 label="Icon (Material icon name)"
                 name="icon"
-                value={editingExperience?.icon ?? 'work'}
-                onChange={(e) => editingExperience && setEditingExperience({ ...editingExperience, icon: e.target.value })}
+                value={editingExperience ? (editingExperience.icon ?? 'work') : undefined}
+                onChange={
+                  editingExperience
+                    ? (e) => setEditingExperience({ ...editingExperience, icon: e.target.value })
+                    : undefined
+                }
                 placeholder="work"
               />
               <FormField
                 label="Display Order"
                 name="display_order"
                 type="number"
-                value={String(editingExperience?.display_order ?? 0)}
-                onChange={(e) => editingExperience && setEditingExperience({ ...editingExperience, display_order: parseInt(e.target.value) || 0 })}
+                value={editingExperience ? editingExperience.display_order : undefined}
+                onChange={
+                  editingExperience
+                    ? (e) =>
+                        setEditingExperience({
+                          ...editingExperience,
+                          display_order: parseInt(e.target.value, 10) || 0,
+                        })
+                    : undefined
+                }
               />
             </div>
 

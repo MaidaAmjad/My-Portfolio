@@ -47,8 +47,8 @@ export default function FormField({
         <textarea
           id={name}
           name={name}
-          value={value as string}
-          onChange={handleChange}
+          {...(value !== undefined ? { value: value as string } : {})}
+          onChange={onChange ? handleChange : undefined}
           placeholder={placeholder}
           required={required}
           rows={rows || 4}
@@ -60,8 +60,8 @@ export default function FormField({
           id={name}
           type={type}
           name={name}
-          value={value}
-          onChange={handleChange}
+          {...(value !== undefined ? { value } : {})}
+          onChange={onChange ? handleChange : undefined}
           placeholder={placeholder}
           required={required}
           disabled={disabled}

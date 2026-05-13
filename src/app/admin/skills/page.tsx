@@ -146,21 +146,27 @@ export default function SkillsManagement() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form key={editingSkill?.id ?? 'new'} onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 label="Name"
                 name="name"
-                value={editingSkill?.name || ''}
-                onChange={(e) => editingSkill && setEditingSkill({ ...editingSkill, name: e.target.value })}
+                value={editingSkill ? editingSkill.name : undefined}
+                onChange={
+                  editingSkill ? (e) => setEditingSkill({ ...editingSkill, name: e.target.value }) : undefined
+                }
                 required
               />
 
               <FormField
                 label="Category"
                 name="category"
-                value={editingSkill?.category || ''}
-                onChange={(e) => editingSkill && setEditingSkill({ ...editingSkill, category: e.target.value })}
+                value={editingSkill ? (editingSkill.category ?? '') : undefined}
+                onChange={
+                  editingSkill
+                    ? (e) => setEditingSkill({ ...editingSkill, category: e.target.value })
+                    : undefined
+                }
               />
             </div>
 
@@ -168,8 +174,10 @@ export default function SkillsManagement() {
               <FormField
                 label="Icon"
                 name="icon"
-                value={editingSkill?.icon || ''}
-                onChange={(e) => editingSkill && setEditingSkill({ ...editingSkill, icon: e.target.value })}
+                value={editingSkill ? (editingSkill.icon ?? '') : undefined}
+                onChange={
+                  editingSkill ? (e) => setEditingSkill({ ...editingSkill, icon: e.target.value }) : undefined
+                }
                 placeholder="🐍"
               />
 
@@ -177,8 +185,16 @@ export default function SkillsManagement() {
                 label="Proficiency Level"
                 name="proficiency_level"
                 type="number"
-                value={editingSkill?.proficiency_level || 0}
-                onChange={(e) => editingSkill && setEditingSkill({ ...editingSkill, proficiency_level: parseInt(e.target.value) })}
+                value={editingSkill ? editingSkill.proficiency_level : undefined}
+                onChange={
+                  editingSkill
+                    ? (e) =>
+                        setEditingSkill({
+                          ...editingSkill,
+                          proficiency_level: parseInt(e.target.value, 10) || 0,
+                        })
+                    : undefined
+                }
                 min="0"
                 max="100"
                 required
@@ -189,8 +205,16 @@ export default function SkillsManagement() {
               label="Display Order"
               name="display_order"
               type="number"
-              value={editingSkill?.display_order || 0}
-              onChange={(e) => editingSkill && setEditingSkill({ ...editingSkill, display_order: parseInt(e.target.value) })}
+              value={editingSkill ? editingSkill.display_order : undefined}
+              onChange={
+                editingSkill
+                  ? (e) =>
+                      setEditingSkill({
+                        ...editingSkill,
+                        display_order: parseInt(e.target.value, 10) || 0,
+                      })
+                  : undefined
+              }
               placeholder="0"
             />
 

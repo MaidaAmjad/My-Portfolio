@@ -87,6 +87,7 @@ export default function ProjectsManagement() {
   }
 
   const handleEdit = (project: ProjectWithTags) => {
+    setMessage('')
     setEditingProject(project)
     setTagsInput(project.project_tags.map(t => t.tag).join(', '))
     setShowForm(true)
@@ -167,12 +168,16 @@ export default function ProjectsManagement() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form key={editingProject?.id ?? 'new'} onSubmit={handleSubmit} className="space-y-6">
             <FormField
               label="Title"
               name="title"
-              value={editingProject?.title || ''}
-              onChange={(e) => editingProject && setEditingProject({ ...editingProject, title: e.target.value })}
+              value={editingProject ? editingProject.title : undefined}
+              onChange={
+                editingProject
+                  ? (e) => setEditingProject({ ...editingProject, title: e.target.value })
+                  : undefined
+              }
               required
             />
 
@@ -181,8 +186,12 @@ export default function ProjectsManagement() {
               name="description"
               type="textarea"
               rows={4}
-              value={editingProject?.description || ''}
-              onChange={(e) => editingProject && setEditingProject({ ...editingProject, description: e.target.value })}
+              value={editingProject ? editingProject.description : undefined}
+              onChange={
+                editingProject
+                  ? (e) => setEditingProject({ ...editingProject, description: e.target.value })
+                  : undefined
+              }
               required
             />
 
@@ -212,8 +221,12 @@ export default function ProjectsManagement() {
                   label="Image URL"
                   name="image_url"
                   type="url"
-                  value={editingProject?.image_url || ''}
-                  onChange={(e) => editingProject && setEditingProject({ ...editingProject, image_url: e.target.value })}
+                  value={editingProject ? (editingProject.image_url ?? '') : undefined}
+                  onChange={
+                    editingProject
+                      ? (e) => setEditingProject({ ...editingProject, image_url: e.target.value || null })
+                      : undefined
+                  }
                 />
                 {editingProject?.image_url && (
                   <img src={editingProject.image_url} alt="preview" className="w-full h-32 object-cover rounded-lg border border-slate-200 dark:border-slate-600" />
@@ -224,8 +237,12 @@ export default function ProjectsManagement() {
                 label="Project URL"
                 name="project_url"
                 type="url"
-                value={editingProject?.project_url || ''}
-                onChange={(e) => editingProject && setEditingProject({ ...editingProject, project_url: e.target.value })}
+                value={editingProject ? (editingProject.project_url ?? '') : undefined}
+                onChange={
+                  editingProject
+                    ? (e) => setEditingProject({ ...editingProject, project_url: e.target.value || null })
+                    : undefined
+                }
               />
             </div>
 
@@ -234,23 +251,40 @@ export default function ProjectsManagement() {
                 label="GitHub URL"
                 name="github_url"
                 type="url"
-                value={editingProject?.github_url || ''}
-                onChange={(e) => editingProject && setEditingProject({ ...editingProject, github_url: e.target.value })}
+                value={editingProject ? (editingProject.github_url ?? '') : undefined}
+                onChange={
+                  editingProject
+                    ? (e) => setEditingProject({ ...editingProject, github_url: e.target.value || null })
+                    : undefined
+                }
               />
 
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                   Featured Project
                 </label>
-                <select
-                  name="featured"
-                  value={editingProject?.featured ? 'on' : 'off'}
-                  onChange={(e) => editingProject && setEditingProject({ ...editingProject, featured: e.target.value === 'on' })}
-                  className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-slate-700 dark:text-white"
-                >
-                  <option value="on">Yes</option>
-                  <option value="off">No</option>
-                </select>
+                {editingProject ? (
+                  <select
+                    name="featured"
+                    value={editingProject.featured ? 'on' : 'off'}
+                    onChange={(e) =>
+                      setEditingProject({ ...editingProject, featured: e.target.value === 'on' })
+                    }
+                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-slate-700 dark:text-white"
+                  >
+                    <option value="on">Yes</option>
+                    <option value="off">No</option>
+                  </select>
+                ) : (
+                  <select
+                    name="featured"
+                    defaultValue="off"
+                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-slate-700 dark:text-white"
+                  >
+                    <option value="on">Yes</option>
+                    <option value="off">No</option>
+                  </select>
+                )}
               </div>
             </div>
 
@@ -258,8 +292,16 @@ export default function ProjectsManagement() {
               label="Display Order"
               name="display_order"
               type="number"
-              value={editingProject?.display_order ?? 0}
-              onChange={(e) => editingProject && setEditingProject({ ...editingProject, display_order: parseInt(e.target.value) || 0 })}
+              value={editingProject ? editingProject.display_order : undefined}
+              onChange={
+                editingProject
+                  ? (e) =>
+                      setEditingProject({
+                        ...editingProject,
+                        display_order: parseInt(e.target.value, 10) || 0,
+                      })
+                  : undefined
+              }
               placeholder="0"
             />
 
@@ -293,7 +335,10 @@ export default function ProjectsManagement() {
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Projects Management</h2>
         <button
-          onClick={() => setShowForm(true)}
+          onClick={() => {
+            setMessage('')
+            setShowForm(true)
+          }}
           className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors flex items-center"
         >
           <span className="material-symbols-outlined mr-2">add</span>
