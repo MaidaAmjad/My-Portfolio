@@ -122,40 +122,22 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Right: Terminal card + profile image */}
+        {/* Right: Profile image only */}
         <div className="flex flex-col items-center gap-6">
 
           {/* Profile image */}
-          <div className="relative group">
-            <div className="absolute -inset-4 bg-gradient-to-tr from-primary to-purple-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
-            <div className="relative w-48 h-48 md:w-60 md:h-60 rounded-3xl overflow-hidden border-4 border-white dark:border-white/10 shadow-2xl rotate-3 group-hover:rotate-0 transition-transform duration-500">
-              <img
-                className="w-full h-full object-cover"
-                alt={profile?.name || 'Profile'}
-                src={profile?.profile_image_url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuDb8ILWppBCEFSdWLI19-f7RepccaB6jb_vheLf2SjBjI8PvMGpIhT4p55A49VjUidFOTKeRxbqUNhUp8Wb771HIoqZKSCmQGCskc-ksZbM3KhtUh2N5TebfgtkJhBfQLJk_qzAIoDzN8HH4fBaNnAv3MzGYFWmQVCq5ZbfREiyN2d7tFsfHwn10EEoXitYbRuzCD4k3kczv8rJcesPF2Ag3ZZ-w2r9JYMZDQP6GAftSP6bf97ELxzgrUQfP_N9yESDgNrdC2jmOQ'}
-              />
+          {profile?.profile_image_url && (
+            <div className="relative group">
+              <div className="absolute -inset-4 bg-gradient-to-tr from-primary to-purple-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
+              <div className="relative w-48 h-48 md:w-80 md:h-80 rounded-3xl overflow-hidden border-4 border-white dark:border-white/10 shadow-2xl rotate-3 group-hover:rotate-0 transition-transform duration-500">
+                <img
+                  className="w-full h-full object-cover"
+                  alt={profile.name || 'Profile'}
+                  src={profile.profile_image_url}
+                />
+              </div>
             </div>
-          </div>
-
-          {/* Terminal card */}
-          <div className="w-full max-w-sm glass dark:glass rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-            <div className="flex items-center gap-2 px-4 py-3 bg-slate-800/80 border-b border-white/10">
-              <span className="w-3 h-3 rounded-full bg-red-500"></span>
-              <span className="w-3 h-3 rounded-full bg-yellow-500"></span>
-              <span className="w-3 h-3 rounded-full bg-green-500"></span>
-              <span className="ml-2 text-xs text-slate-400 font-mono">model_training.py</span>
-            </div>
-            <div className="p-4 font-mono text-xs space-y-1">
-              <p><span className="text-green-400">$</span> <span className="text-slate-300">python train.py --model gpt</span></p>
-              <p className="text-slate-500">{'>'} Loading dataset...</p>
-              <p className="text-slate-500">{'>'} Epoch 1/10 ━━━━━━ 100%</p>
-              <p className="text-yellow-400">{'>'} Training model<span className="animate-pulse">...</span></p>
-              <p className="text-slate-500 flex items-center gap-2">
-                {'>'} AQI: <span className="text-primary font-bold">90</span>
-                <span className="inline-block w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-              </p>
-            </div>
-          </div>
+          )}
 
           {/* Scroll indicator */}
           <div className="flex flex-col items-center gap-1 text-slate-500 text-xs mt-2">
