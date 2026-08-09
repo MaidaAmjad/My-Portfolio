@@ -42,16 +42,29 @@ const SkillsSection = () => {
     <section className="max-w-6xl mx-auto px-6 py-20" id="skills">
       <h2 className="text-3xl font-bold mb-12 text-center text-slate-900 dark:text-white">Technical Arsenal</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {skills.map((skill, index) => (
-          <div key={skill.id} className="glass dark:glass p-6 rounded-2xl flex flex-col gap-4">
+        {skills.map((skill) => (
+          <div
+            key={skill.id}
+            className="glass dark:glass p-6 rounded-2xl flex flex-col gap-4 group cursor-default
+              transition-all duration-300
+              hover:scale-[1.05] hover:-translate-y-1
+              hover:border hover:border-primary/50
+              hover:shadow-[0_0_24px_#5048e555]"
+          >
             <div className="flex items-center justify-between">
-              <span className="text-3xl">{skill.icon || '💻'}</span>
-              <span className="text-xs font-bold text-slate-400 uppercase">{skill.proficiency_level}%</span>
+              <span className="text-3xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
+                {skill.icon || '💻'}
+              </span>
+              <span className="text-xs font-bold text-slate-400 uppercase group-hover:text-primary transition-colors duration-300">
+                {skill.proficiency_level}%
+              </span>
             </div>
-            <h3 className="font-bold text-lg">{skill.name}</h3>
+            <h3 className="font-bold text-lg group-hover:text-primary transition-colors duration-300">
+              {skill.name}
+            </h3>
             <div className="h-1.5 w-full bg-slate-200 dark:bg-white/10 rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-primary rounded-full transition-all duration-1000 ease-out"
+              <div
+                className="h-full bg-primary rounded-full transition-all duration-1000 ease-out group-hover:shadow-[0_0_8px_#5048e5]"
                 style={{ width: `${skill.proficiency_level}%` }}
               ></div>
             </div>
