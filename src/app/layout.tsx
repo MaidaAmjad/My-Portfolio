@@ -25,7 +25,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
         />
       </head>
-      <body className="bg-background-dark font-display text-slate-100 antialiased">
+      <body className={`${inter.className} bg-background-dark text-slate-100 antialiased`}>
         {children}
       </body>
     </html>
